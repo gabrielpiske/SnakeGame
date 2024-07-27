@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 public class Frame extends JFrame {
 
     Frame() {
-        
+
         this.add(new Panel());
         this.setTitle("Jogo da Cobra");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
