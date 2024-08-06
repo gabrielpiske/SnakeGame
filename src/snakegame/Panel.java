@@ -31,6 +31,7 @@ public class Panel extends JPanel implements ActionListener {
     boolean rodar = false;
     Timer timer;
     Random random;
+    JButton buttonPlayAgain;
 
     //Construtor do Panel
     Panel() {
@@ -139,18 +140,6 @@ public class Panel extends JPanel implements ActionListener {
         if (x[0] < 0 || x[0] > LARGURA_JANELA || y[0] < 0 || y[0] > ALTURA_JANELA) {
             rodar = false;
         }
-//        if (x[0] < 0) {
-//            rodar = false;
-//        }
-//        if (x[0] > LARGURA_JANELA) {
-//            rodar = false;
-//        }
-//        if (y[0] < 0) {
-//            rodar = false;
-//        }
-//        if (y[0] > ALTURA_JANELA) {
-//            rodar = false;
-//        }
 
         if (!rodar) {
             timer.stop();
@@ -159,11 +148,42 @@ public class Panel extends JPanel implements ActionListener {
 
     //Tela Game Over
     public void gameOver(Graphics g) {
-        //Tela Game Over
         g.setColor(Color.red);
         g.setFont(new Font("JetBrains Mono", Font.PLAIN, 75));
         FontMetrics metrics2 = getFontMetrics(g.getFont());
         g.drawString("Game Over", (LARGURA_JANELA - metrics2.stringWidth("Game Over")) / 2, ALTURA_JANELA / 2);
+
+        // Botão Jogar Novamente
+        if (buttonPlayAgain == null) {
+            buttonPlayAgain = new JButton("Jogar Novamente");
+            buttonPlayAgain.setFont(new Font("JetBrains Mono", Font.PLAIN, 20));
+            buttonPlayAgain.setBounds((LARGURA_JANELA - 200) / 2, (ALTURA_JANELA - 50) / 2 + 100, 200, 50);
+            buttonPlayAgain.addActionListener(e -> restartGame());
+            this.setLayout(null);
+            this.add(buttonPlayAgain);
+        }
+    }
+
+    //Reinicia o jogo
+    public void restartGame() {
+        this.remove(buttonPlayAgain);
+        buttonPlayAgain = null;
+        this.revalidate();
+        this.repaint();
+        
+        //Zera variaveis
+        bodyParts = 6;
+        macasComidas = 0;
+        direction = 'R';
+        rodar = true;
+
+        for (int i = 0; i < bodyParts; i++) {
+            x[i] = 0;
+            y[i] = 0;
+        }
+
+        newApple();
+        timer.restart();
     }
 
     //Chamado a cada ação do timer
